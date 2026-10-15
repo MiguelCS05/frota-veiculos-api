@@ -1,33 +1,14 @@
 import { Router } from "express";
-import { veiculoService } from "../services/veiculo.service.js";
+import { veiculoService } from "../services/service.js";
 
 export const veiculoRouter = Router()
 
-veiculoRouter.post('/', async (req,res) =>{
-  try{
-    const veiculo = await
-    veiculoService.create(req.body)
+veiculoRouter.get("/", async (req, res) =>{
+    const veiculo = await veiculoService.getAll();
+    return res.json(veiculo);
+});
 
-    res.status(201).json(veiculo)
-  }catch(error){
-    console.error(error)
-
-    res.status(500).json({
-        mensagem: 'Erro ao cadastrar veículo'
-    })
-  }
-})
-
-veiculoRouter.get('/', async(req,res) => {
-    try{
-        const veiculos = await
-        veiculoService.getAll()
-
-        res.status(200).json(veiculos)
-    }catch (error){
-        console.error(error)
-        res.status(500).json({
-            mensagem: 'Erro ao listar veículos'
-        })
-    }
-})
+veiculoRouter.post("/", async (req, res) =>{
+    const veiculo = await veiculoService.create(req.body);
+    return res.status(201).json(veiculo);
+});
